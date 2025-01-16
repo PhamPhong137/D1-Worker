@@ -1,25 +1,30 @@
+import { Hono } from 'hono';
+
 export interface Env {
-	// If you set another name in wrangler.toml as the value for 'binding',
-	// replace "DB" with the variable name you defined.
-	DB: D1Database;
+  DB: D1Database; // Binding cho D1 database
+}
+
+const app = new Hono<{ Bindings: Env }>();
+
+// Định nghĩa endpoint
+app.get('/api/beverages', async (c) => {
+  const db = c.env.DB;
+  
+  try {
+    // Truy vấn D1 database
+    const { results } = await db
+      .prepare('SELECT * FROM Customers WHERE CompanyName = ?')
+      .bind('Bs Beverages')
+      .all();
+
+    return c.json(results); // Trả về kết quả dạng JSON
+  } catch (error) {
+    console.error(error);
+    return c.text('Failed to fetch data', 500);
   }
-  
-  export default {
-	async fetch(request, env): Promise<Response> {
-	  const { pathname } = new URL(request.url);
-  
-	  if (pathname === "/api/beverages") {
-		// If you did not use `DB` as your binding name, change it here
-		const { results } = await env.DB.prepare(
-		  "SELECT * FROM Customers WHERE CompanyName = ?",
-		)
-		  .bind("Bs Beverages")
-		  .all();
-		return Response.json(results);
-	  }
-  
-	  return new Response(
-		"Call /api/beverages to see everyone who works at Bs Beverages",
-	  );
-	},
-  } satisfies ExportedHandler<Env>;
+});
+
+// Endpoint mặc định
+app.all('*', (c) => c.text('Call /api/beverages to see everyone who works at Bs Beverages'));
+
+export default app;
