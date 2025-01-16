@@ -1,7 +1,7 @@
 #:schema node_modules/wrangler/config-schema.json
 name = "d1-tutorial"
 main = "src/index.ts"
-compati-bility_date = "2025-01-09"
+compatibility_date = "2025-01-16"
 account_id = "8588e7122b474011c4db6490983aecd7"
 
 # Workers Logs
