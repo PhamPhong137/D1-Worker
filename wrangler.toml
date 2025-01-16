@@ -2,7 +2,7 @@
 name = "d1-tutorial"
 main = "src/index.ts"
 compati-bility_date = "2025-01-09"
-account_id = 8588e7122b474011c4db6490983aecd7
+account_id = "8588e7122b474011c4db6490983aecd7"
 
 # Workers Logs
 # Docs: https://developers.cloudflare.com/workers/observability/logs/workers-logs/
